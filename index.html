@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Jobs Hub</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0faff; /* Light background */
+            color: #333;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #3778c2; /* Vibrant blue */
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #fdd835; /* Yellow accent */
+        }
+
+        header nav ul {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+            display: flex;
+        }
+
+        header nav ul li {
+            margin-left: 25px;
+        }
+
+        header nav ul li a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        header nav ul li a:hover {
+            color: #fdd835;
+        }
+
+        .job-category-dropdown {
+            position: relative;
+        }
+
+        .job-category-dropdown button {
+            background: none;
+            border: none;
+            color: white;
+            padding: 0;
+            font-size: inherit;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .job-category-dropdown button:hover {
+            color: #fdd835;
+        }
+
+        .job-category-dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #3778c2;
+            min-width: 180px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 5px;
+            top: 100%;
+            left: 0;
+            padding: 10px 0;
+        }
+
+        .job-category-dropdown-content a {
+            color: white;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.3s ease;
+        }
+
+        .job-category-dropdown-content a:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .job-category-dropdown:hover .job-category-dropdown-content {
+            display: block;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #e0f2f7 0%, #bbdefb 100%); /* Gradient background */
+            padding: 100px 0;
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            color: #3778c2;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        .search-bar {
+            max-width: 700px;
+            margin: 0 auto;
+            display: flex;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .search-bar input[type="text"],
+        .search-bar select,
+        .search-bar button {
+            padding: 15px;
+            border: none;
+            background-color: white;
+            font-size: 1rem;
+        }
+
+        .search-bar input[type="text"] {
+            flex-grow: 2;
+        }
+
+        .search-bar select {
+            flex-grow: 1;
+            appearance: none;
+            background-image: url('data:image/svg+xml;charset=UTF-8,<svg fill="%23333" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 16px;
+        }
+
+        .search-bar button {
+            background-color: #2ecc71; /* Green search button */
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .search-bar button:hover {
+            background-color: #27ae60;
+        }
+
+        .job-listings {
+            padding: 60px 0;
+            background-color: #fff; /* White job listing background */
+        }
+
+        .job-listings h2 {
+            font-size: 2.5rem;
+            color: #3778c2;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .job-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .job-card {
+            background-color: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            border-left: 5px solid #4caf50; /* Green accent for job cards */
+        }
+
+        .job-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .job-card h3 {
+            font-size: 1.5rem;
+            color: #3778c2;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .job-card p {
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .job-card .meta {
+            font-size: 0.9rem;
+            color: #777;
+            margin-bottom: 10px;
+        }
+
+        .job-card .apply-button {
+            display: inline-block;
+            background-color: #fbc02d; /* Yellow apply button */
+            color: #2c3e50;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            font-weight: bold;
+        }
+
+        .job-card .apply-button:hover {
+            background-color: #f9a825;
+        }
+
+        .auth-section {
+            padding: 60px 0;
+            background-color: #e3f2fd; /* Light blue for auth */
+            text-align: center;
+        }
+
+        .auth-section h2 {
+            font-size: 2.5rem;
+            color: #3778c2;
+            margin-bottom: 30px;
+        }
+
+        .auth-form {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+
+        .auth-form .form-group {
+            margin-bottom: 20px;
+        }
+
+        .auth-form label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .auth-form input[type="email"],
+        .auth-form input[type="password"],
+        .auth-form input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
+        .auth-form button {
+            background-color: #3778c2; /* Blue auth button */
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        .auth-form button:hover {
+            background-color: #2c5e8a;
+        }
+
+        .auth-form .form-links {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .auth-form .form-links a {
+            color: #3778c2;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .auth-form .form-links a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 1.5rem 0;
+            font-size: 0.9rem;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">Tech<span style="color: #fdd835;">Hire</span></div>
+            <nav>
+                <ul>
+                    <li class="job-category-dropdown">
+                        <button>Jobs</button>
+                        <div class="job-category-dropdown-content">
+                            <a href="#web-dev">Web Development</a>
+                            <a href="#ai-ml">AI/ML</a>
+                            <a href="#java">Java Development</a>
+                            <a href="#full-stack">Full Stack</a>
+                            <a href="#india-jobs">Jobs in India</a>
+                            <a href="#usa-jobs">Jobs in USA</a>
+                            <a href="#uk-jobs">Jobs in UK</a>
+                            <a href="#all-jobs">All Jobs</a>
+                        </div>
+                    </li>
+                    <li><a href="#login-section">Login</a></li>
+                    <li><a href="#register-section">Register</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Discover Your Next Tech Opportunity</h1>
+            <p>Explore exciting roles in Web Development, AI/ML, Java, and Full Stack Development across the globe.</p>
+            <div class="search-bar">
+                <input type="text" id="search" placeholder="Search keywords (e.g., React, TensorFlow, Spring)">
+                <select id="location">
+                    <option value="">Any Location</option>
+                    <option value="india">India</option>
+                    <option value="usa">United States</option>
+                    <option value="uk">United Kingdom</option>
+                    <option value="canada">Canada</option>
+                </select>
+                <button onclick="searchJobs()">Find Jobs</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="web-dev" class="job-listings">
+        <div class="container">
+            <h2>Web Development Jobs</h2>
+            <div class="job-grid" id="web-dev-jobs">
+                </div>
+        </div>
+    </section>
+
+    <section id="ai-ml" class="job-listings" style="background-color: #e8f5e9;">
+        <div class="container">
+            <h2>AI/ML Jobs</h2>
+            <div class="job-grid" id="ai-ml-jobs">
+                </div>
+        </div>
+    </section>
+
+    <section id="java" class="job-listings">
+        <div class="container">
+            <h2>Java Development Jobs</h2>
+            <div class="job-grid" id="java-jobs">
+                </div>
+        </div>
+    </section>
+
+    <section id="full-stack" class="job-listings" style="background-color: #f3e5f5;">
+        <div class="container">
+            <h2>Full Stack Developer Jobs</h2>
+            <div class="job-grid" id="full-stack-jobs">
+                </div>
+        </div>
+    </section>
+
+    <section id="india-jobs" class="job-listings" style="background-color: #fff8e1;">
+        <div class="container">
+            <h2>Jobs in India</h2>
+            <div class="job-grid" id="india-jobs-list">
+                </div>
+        </div>
+    </section>
+
+    <section id="usa-jobs" class="job-listings" style="background-color: #e0f7fa;">
+        <div class="container">
+            <h2>Jobs in USA</h2>
+            <div class="job-grid" id="usa-jobs-list">
+                </div>
+        </div>
+    </section>
+
+    <section id="uk-jobs" class="job-listings" style="background-color: #f1f8e9;">
+        <div class="container">
+            <h2>Jobs in UK</h2>
+            <div class="job-grid" id="uk-jobs-list">
+                </div>
+        </div>
+    </section>
+
+    <section id="all-jobs" class="job-listings" style="background-color: #fffde7;">
+        <div class="container">
+            <h2>All Available Jobs</h2>
+            <div class="job-grid" id="all-jobs-list">
+                </div>
+        </div>
+    </section>
+
+    <section id="login-section" class="auth-section">
+        <div class="container">
+            <h2>Login</h2>
+            <div class="auth-form">
+                <div class="form-group">
+                    <label for="login-email">Email:</label>
+                    <input type="email" id="login-email" name="login-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password:</label>
+                    <input type="password" id="login-password" name="login-password" required>
+                </div>
+                <button onclick="simulateLogin()">Login</button>
+                <div class="form-links">
+                    <a href="#register-section">Don't have an account? Register here</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="register-section" class="auth-section" style="background-color: #e1bee7;">
+        <div class="container">
+            <h2>Register</h2>
+            <div class="auth-form">
+                <div class="form-group">
+                    <label for="register-name">Name:</label>
+                    <input type="text" id="register-name" name="register-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Email:</label>
+                    <input type="email" id="register-email" name="register-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Password:</label>
+                    <input type="password" id="register-password" name="register-password" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-confirm-password">Confirm Password:</label>
+                    <input type="password" id="register-confirm-password" name="register-confirm-password" required>
+                </div>
+                <button onclick="simulateRegister()">Register</button>
+                <div class="form-links">
+                    <a href="#login-section">Already have an account? Login here</a>
+                </div>
+            </div>
+        </section>
+    
+        <footer>
+            <div class="container">
+                <p>&copy; 2025 TechHire. All rights reserved.</p>
+            </div>
+        </footer>
+    
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                loadJobListings();
+    
+                // Basic smooth scrolling for navigation links
+                document.querySelectorAll('header nav a').forEach(anchor => {
+                    anchor.addEventListener('click', function (e) {
+                        e.preventDefault();
+    
+                        document.querySelector(this.getAttribute('href')).scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    });
+                });
+            });
+    
+            function loadJobListings() {
+                const jobData = [
+                    {
+                        title: 'Frontend Engineer (React)',
+                        company: 'Innovate Web Solutions',
+                        location: 'San Francisco, USA',
+                        description: 'Build cutting-edge user interfaces with React and modern JavaScript.',
+                        tags: ['web development', 'frontend', 'react', 'javascript'],
+                        country: 'usa'
+                    },
+                    {
+                        title: 'Machine Learning Engineer',
+                        company: 'AI Dynamics Inc.',
+                        location: 'London, UK',
+                        description: 'Develop and deploy machine learning models for innovative AI applications.',
+                        tags: ['ai', 'ml', 'python', 'tensorflow'],
+                        country: 'uk'
+                    },
+                    {
+                        title: 'Senior Java Developer',
+                        company: 'Global Tech Systems',
+                        location: 'Bangalore, India',
+                        description: 'Design and implement scalable backend solutions using Java and Spring.',
+                        tags: ['java', 'backend', 'spring', 'api'],
+                        country: 'india'
+                    },
+                    {
+                        title: 'Full Stack Developer (Node.js)',
+                        company: 'WebCrafters United',
+                        location: 'Toronto, Canada',
+                        description: 'Work across the entire stack using JavaScript, Node.js, and modern frameworks.',
+                        tags: ['full stack', 'web development', 'javascript', 'node.js'],
+                        country: 'canada'
+                    },
+                    {
+                        title: 'AI Research Scientist',
+                        company: 'Future AI Labs',
+                        location: 'New York, USA',
+                        description: 'Conduct research in artificial intelligence and machine learning to push technological boundaries.',
+                        tags: ['ai', 'research', 'python', 'pytorch'],
+                        country: 'usa'
+                    },
+                    {
+                        title: 'Java Backend Engineer',
+                        company: 'Enterprise Software Corp',
+                        location: 'Pune, India',
+                        description: 'Develop and maintain robust backend services using Java, RESTful APIs, and microservices.',
+                        tags: ['java', 'backend', 'restful api', 'microservices'],
+                        country: 'india'
+                    },
+                    {
+                        title: 'Web Development Intern',
+                        company: 'Startup Spark',
+                        location: 'Berlin, Germany',
+                        description: 'Gain hands-on experience in web development technologies.',
+                        tags: ['web development', 'frontend', 'backend', 'internship'],
+                        country: 'germany'
+                    },
+                    {
+                        title: 'Data Scientist (AI/ML)',
+                        company: 'Insightful Analytics',
+                        location: 'Sydney, Australia',
+                        description: 'Analyze large datasets and build predictive models using machine learning techniques.',
+                        tags: ['ai', 'ml', 'data science', 'python'],
+                        country: 'australia'
+                    },
+                    {
+                        title: 'Junior Java Developer',
+                        company: 'Code Solutions Ltd.',
+                        location: 'Chennai, India',
+                        description: 'Assist in the development and testing of Java-based applications.',
+                        tags: ['java', 'backend', 'development'],
+                        country: 'india'
+                    },
+                    {
+                        title: 'Full Stack Engineer (Python/React)',
+                        company: 'Synergy Tech Group',
+                        location: 'Austin, USA',
+                        description: 'Develop and deploy full-stack applications using Python, Django, and React.',
+                        tags: ['full stack', 'web development', 'python', 'react', 'django'],
+                        country: 'usa'
+                    },
+                    {
+                        title: 'Senior Web Developer',
+                        company: 'Global Web Agency',
+                        location: 'Manchester, UK',
+                        description: 'Lead web development projects and mentor junior developers.',
+                        tags: ['web development', 'frontend', 'backend', 'leadership'],
+                        country: 'uk'
+                    },
+                    {
+                        title: 'AI/ML Research Associate',
+                        company: 'Quantum AI Institute',
+                        location: 'Cambridge, UK',
+                        description: 'Contribute to advanced research projects in artificial intelligence and machine learning.',
+                        tags: ['ai', 'ml', 'research', 'python'],
+                        country: 'uk'
+                    },
+                ];
+    
+                displayJobs('web-dev-jobs', jobData.filter(job => job.tags.includes('web development')));
+                displayJobs('ai-ml-jobs', jobData.filter(job => job.tags.includes('ai') || job.tags.includes('ml') || job.tags.includes('data science')));
+                displayJobs('java-jobs', jobData.filter(job => job.tags.includes('java')));
+                displayJobs('full-stack-jobs', jobData.filter(job => job.tags.includes('full stack')));
+                displayJobs('india-jobs-list', jobData.filter(job => job.country === 'india'));
+                displayJobs('usa-jobs-list', jobData.filter(job => job.country === 'usa'));
+                displayJobs('uk-jobs-list', jobData.filter(job => job.country === 'uk'));
+                displayJobs('all-jobs-list', jobData);
+            }
+    
+            function displayJobs(elementId, jobs) {
+                const container = document.getElementById(elementId);
+                if (container) {
+                    container.innerHTML = '';
+                    if (jobs.length === 0) {
+                        container.innerHTML = '<p>No jobs found in this category.</p>';
+                        return;
+                    }
+                    jobs.forEach(job => {
+                        const jobCard = document.createElement('div');
+                        jobCard.classList.add('job-card');
+                        jobCard.innerHTML = `
+                            <h3>${job.title}</h3>
+                            <p class="meta">${job.company} - ${job.location}</p>
+                            <p>${job.description}</p>
+                            <a href="#" class="apply-button">Apply Now</a>
+                        `;
+                        container.appendChild(jobCard);
+                    });
+                }
+            }
+    
+            function searchJobs() {
+                const searchTerm = document.getElementById('search').value.toLowerCase();
+                const locationFilter = document.getElementById('location').value.toLowerCase();
+                const allJobsContainer = document.getElementById('all-jobs-list');
+                const jobData = [
+                    {
+                        title: 'Frontend Engineer (React)',
+                        company: 'Innovate Web Solutions',
+                        location: 'San Francisco, USA',
+                        description: 'Build cutting-edge user interfaces with React and modern JavaScript.',
+                        tags: ['web development', 'frontend', 'react', 'javascript'],
+                        country: 'usa'
+                    },
+                    {
+                        title: 'Machine Learning Engineer',
+                        company: 'AI Dynamics Inc.',
+                        location: 'London, UK',
+                        description: 'Develop and deploy machine learning models for innovative AI applications.',
+                        tags: ['ai', 'ml', 'python', 'tensorflow'],
+                        country: 'uk'
+                    },
+                    {
+                        title: 'Senior Java Developer',
+                        company: 'Global Tech Systems',
+                        location: 'Bangalore, India',
+                        description: 'Design and implement scalable backend solutions using Java and Spring.',
+                        tags: ['java', 'backend', 'spring', 'api'],
+                        country: 'india'
+                    },
+                    {
+                        title: 'Full Stack Developer (Node.js)',
+                        company: 'WebCrafters United',
+                        location: 'Toronto, Canada',
+                        description: 'Work across the entire stack using JavaScript, Node.js, and modern frameworks.',
+                        tags: ['full stack', 'web development', 'javascript', 'node.js'],
+                        country: 'canada'
+                    },
+                    {
+                        title: 'AI Research Scientist',
+                        company: 'Future AI Labs',
+                        location: 'New York, USA',
+                        description: 'Conduct research in artificial intelligence and machine learning to push technological boundaries.',
+                        tags: ['ai', 'research', 'python', 'pytorch'],
+                        country: 'usa'
+                    },
+                    {
+                        title: 'Java Backend Engineer',
+                        company: 'Enterprise Software Corp',
+                        location: 'Pune, India',
+                        description: 'Develop and maintain robust backend services using Java, RESTful APIs, and microservices.',
+                        tags: ['java', 'backend', 'restful api', 'microservices'],
+                        country: 'india'
+                    },
+                    {
+                        title: 'Web Development Intern',
+                        company: 'Startup Spark',
+                        location: 'Berlin, Germany',
+                        description: 'Gain hands-on experience in web development technologies.',
+                        tags: ['web development', 'frontend', 'backend', 'internship'],
+                        country: 'germany'
+                    },
+                    {
+                        title: 'Data Scientist (AI/ML)',
+                        company: 'Insightful Analytics',
+                        location: 'Sydney, Australia',
+                        description: 'Analyze large datasets and build predictive models using machine learning techniques.',
+                        tags: ['ai', 'ml', 'data science', 'python'],
+                        country: 'australia'
+                    },
+                    {
+                        title: 'Junior Java Developer',
+                        company: 'Code Solutions Ltd.',
+                        location: 'Chennai, India',
+                        description: 'Assist in the development and testing of Java-based applications.',
+                        tags: ['java', 'backend', 'development'],
+                        country: 'india'
+                    },
+                    {
+                        title: 'Full Stack Engineer (Python/React)',
+                        company: 'Synergy Tech Group',
+                        location: 'Austin, USA',
+                        description: 'Develop and deploy full-stack applications using Python, Django, and React.',
+                        tags: ['full stack', 'web development', 'python', 'react', 'django'],
+                        country: 'usa'
+                    },
+                    {
+                        title: 'Senior Web Developer',
+                        company: 'Global Web Agency',
+                        location: 'Manchester, UK',
+                        description: 'Lead web development projects and mentor junior developers.',
+                        tags: ['web development', 'frontend', 'backend', 'leadership'],
+                        country: 'uk'
+                    },
+                    {
+                        title: 'AI/ML Research Associate',
+                        company: 'Quantum AI Institute',
+                        location: 'Cambridge, UK',
+                        description: 'Contribute to advanced research projects in artificial intelligence and machine learning.',
+                        tags: ['ai', 'ml', 'research', 'python'],
+                        country: 'uk'
+                    },
+                ];
+    
+                if (allJobsContainer) {
+                    const filteredJobs = jobData.filter(job =>
+                        job.title.toLowerCase().includes(searchTerm) &&
+                        (locationFilter === '' || job.location.toLowerCase().includes(locationFilter))
+                    );
+                    displayJobs('all-jobs-list', filteredJobs);
+                }
+            }
+    
+            function simulateLogin() {
+                alert('Login functionality is a simulation.');
+                // In a real application, you would send login credentials to a server.
+            }
+    
+            function simulateRegister() {
+                const password = document.getElementById('register-password').value;
+                const confirmPassword = document.getElementById('register-confirm-password').value;
+                if (password === confirmPassword) {
+                    alert('Registration successful (simulation).');
+                    // In a real application, you would send registration data to a server.
+                } else {
+                    alert('Passwords do not match.');
+                }
+            }
+        </script>
+    </body>
+    </html>
